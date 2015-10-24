@@ -48,7 +48,7 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void testEqualsHashCode() {
+	public void testEquals() {
 		assertTrue(a.equals(a));
 		assertTrue(a.equals(new Coordinate(a.getLatitude(), a.getLongitude())));
 		assertFalse(a.equals(b));
