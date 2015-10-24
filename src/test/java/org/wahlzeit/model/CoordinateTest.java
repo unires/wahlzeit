@@ -56,6 +56,13 @@ public class CoordinateTest {
 	}
 	
 	@Test
+	public void testHashCode() {
+		assertTrue(a.hashCode() == a.hashCode());
+		assertTrue(a.hashCode() == new Coordinate(a.getLatitude(), a.getLongitude()).hashCode());
+		assertFalse(a.hashCode() == b.hashCode());
+	}
+	
+	@Test
 	public void testAsString() {
 		assertTrue(a.asString().equals("42.0, 43.0"));
 	}

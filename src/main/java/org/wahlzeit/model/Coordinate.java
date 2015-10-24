@@ -89,5 +89,20 @@ public class Coordinate implements Serializable {
 	public String asString() {
 		return latitude + ", " + longitude;
 	}
+
+	/**
+	 * @methodtype conversion
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(latitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(longitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
     
 }
