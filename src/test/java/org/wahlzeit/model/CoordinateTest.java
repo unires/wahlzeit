@@ -48,11 +48,18 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void testEquals() {
+	public void testEqualsHashCode() {
 		assertTrue(a.equals(a));
 		assertTrue(a.equals(new Coordinate(a.getLatitude(), a.getLongitude())));
 		assertFalse(a.equals(b));
 		assertFalse(a.equals(nullCoord));
+	}
+	
+	@Test
+	public void testHashCode() {
+		assertTrue(a.hashCode() == a.hashCode());
+		assertTrue(a.hashCode() == new Coordinate(a.getLatitude(), a.getLongitude()).hashCode());
+		assertFalse(a.hashCode() == b.hashCode());
 	}
 	
 	@Test
