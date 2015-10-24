@@ -130,6 +130,11 @@ public class Photo extends DataObject {
 	Long idLong;
 	@Parent
 	Key parent = ObjectManager.applicationRootKey;
+	
+	/**
+	 *
+	 */
+	protected Coordinate location;
 
 	/**
 	 *
@@ -416,6 +421,21 @@ public class Photo extends DataObject {
 	 */
 	public void setNoNewPraise() {
 		noVotesAtLastNotification = noVotes;
+		incWriteCount();
+	}
+	
+	/**
+	 * @methodtype get
+	 */
+	public Coordinate getLocation() {
+		return location;
+	}
+
+	/**
+	 * @methodtype set
+	 */
+	public void setLocation(Coordinate location) {
+		this.location = location;
 		incWriteCount();
 	}
 }
