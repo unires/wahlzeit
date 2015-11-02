@@ -7,14 +7,21 @@ public class Coordinate implements Serializable {
 	private double latitude;
     private double longitude;
     
-    
+    /**
+	 * @methodtype constructor
+	 * @methodproperty regular
+	 */
     public Coordinate(double latitude, double longitude) {
+    	if(latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
+ 			throw new IllegalArgumentException();
+    	
         this.latitude = latitude;
         this.longitude = longitude;
     }
     
     /**
      * @methodtype get
+     * @methodproperty primitive
      */
     public double getLatitude() {
         return latitude;
@@ -22,6 +29,7 @@ public class Coordinate implements Serializable {
     
     /**
      * @methodtype get
+     * @methodproperty primitive
      */
     public double getLongitude() {
         return longitude;
@@ -29,18 +37,28 @@ public class Coordinate implements Serializable {
     
     /**
      * @methodtype get
+     * @methodproperty composed
      */
-    public Coordinate getDistance(Coordinate other) {
+    public double getDistance(Coordinate other) {
     	if (other == null)
     		throw new IllegalArgumentException();
     	
-        return new Coordinate(getLatitudeDistance(other),getLongitudeDistance(other));
+    	final double R = 6371;
+    	double dLat = Math.toRadians(other.getLatitude() - latitude);
+        double dLon = Math.toRadians(other.getLongitude() - longitude);
+        double lat1 = Math.toRadians(latitude);
+        double lat2 = Math.toRadians(other.getLatitude());
+ 
+        double a = Math.pow(Math.sin(dLat / 2),2) + Math.pow(Math.sin(dLon / 2),2) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        return R * c;
     }
     
     /**
      * @methodtype get
+     * @methodproperty primitive
      */
-    public double getLatitudeDistance(Coordinate other) {
+    public double getLatitudinalDistance(Coordinate other) {
     	if (other == null)
     		throw new IllegalArgumentException();
     	
@@ -49,8 +67,9 @@ public class Coordinate implements Serializable {
     
     /**
      * @methodtype get
+     * @methodproperty primitive
      */
-	public double getLongitudeDistance(Coordinate other) {
+	public double getLongitudinalDistance(Coordinate other) {
 		if (other == null)
     		throw new IllegalArgumentException();
     	
@@ -58,7 +77,8 @@ public class Coordinate implements Serializable {
 	}
 	
 	/**
-	 * @methodtype boolean-query
+	 * @methodtype comparison
+	 * @methodproperty composed
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -74,7 +94,8 @@ public class Coordinate implements Serializable {
 	}
 	
 	/**
-	 * @methodtype boolean-query
+	 * @methodtype helper
+	 * @methodproperty primitive
 	 */
 	private boolean isEqual(Coordinate other) {
 		if (latitude == other.getLatitude() && longitude == other.getLongitude())
@@ -85,13 +106,15 @@ public class Coordinate implements Serializable {
 
 	/**
 	 * @methodtype conversion
+	 * @methodproperty primitive
 	 */
 	public String asString() {
 		return latitude + ", " + longitude;
 	}
 
 	/**
-	 * @methodtype conversion
+	 * @methodtype get
+	 * @methodproperty primitive
 	 */
 	@Override
 	public int hashCode() {

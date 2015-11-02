@@ -26,20 +26,18 @@ public class CoordinateTest {
 
 	@Test
 	public void testDistances() {
-		assertEquals("should be 10", 10.0, a.getLatitudeDistance(b), DELTA);
-		assertEquals("should be 1", 1.0, a.getLongitudeDistance(b), DELTA);
-		assertEquals("should be 10", 10.0, a.getDistance(b).getLatitude(), DELTA);
-		assertEquals("should be 1", 1.0, a.getDistance(b).getLongitude(), DELTA);
+		assertEquals("should be 10", 10.0, a.getLatitudinalDistance(b), DELTA);
+		assertEquals("should be 1", 1.0, a.getLongitudinalDistance(b), DELTA);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullLatitudeDistance() {
-		a.getLatitudeDistance(nullCoord);
+		a.getLatitudinalDistance(nullCoord);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullLongitudeDistance() {
-		a.getLongitudeDistance(nullCoord);
+		a.getLongitudinalDistance(nullCoord);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
