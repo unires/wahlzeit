@@ -2,10 +2,12 @@ package org.wahlzeit.model;
 
 import java.io.Serializable;
 
+import com.googlecode.objectify.annotation.Container;
+
 public class Location implements Serializable{
 	
 	private String name;
-	private Coordinate coordinate;
+	@Container private Coordinate coordinate;
 	
 	/**
 	 * @methodtype constructor
@@ -29,7 +31,7 @@ public class Location implements Serializable{
      * @methodproperty primitive
      */
 	public Coordinate getCoordinate() {
-		return new Coordinate(coordinate.getLatitude(), coordinate.getLongitude());
+		return coordinate;
 	}
 
 }
