@@ -13,11 +13,34 @@ public abstract class AbstractCoordinate implements Coordinate, Serializable {
      */
 	@Override
 	public double getDistance(Coordinate coordinate) {
+		//precondition
+		assert coordinate != null;
+		
+		double result;
 		if (coordinate instanceof AbstractCoordinate) {
 			AbstractCoordinate other = (AbstractCoordinate) coordinate;
-			return Math.sqrt(Math.pow((getX() - other.getX()), 2) + Math.pow((getY() - other.getY()), 2) + Math.pow((getZ() - other.getZ()), 2));
+			//precondition
+			assertIsValidCoordinate(other);
+			
+			result = Math.sqrt(Math.pow((getX() - other.getX()), 2) + Math.pow((getY() - other.getY()), 2) + Math.pow((getZ() - other.getZ()), 2));
+		} else {
+			result = coordinate.getDistance(this);
 		}
-		return coordinate.getDistance(this);
+		
+		//postcondition
+		assert Double.isFinite(result);
+		assert result >=0;
+		
+		return result;
+	}
+	
+	/**
+     * @methodtype assertion
+     */
+	protected void assertIsValidCoordinate(AbstractCoordinate coordinate) {
+		assert Double.isFinite(coordinate.getX());
+		assert Double.isFinite(coordinate.getY());
+		assert Double.isFinite(coordinate.getZ());
 	}
 	
 	/**
@@ -25,8 +48,13 @@ public abstract class AbstractCoordinate implements Coordinate, Serializable {
 	 */
 	@Override
 	public boolean isEqual(Coordinate coordinate) {
+		//precondition
+		assert coordinate != null;
 		if (coordinate instanceof AbstractCoordinate) {
 			AbstractCoordinate other = (AbstractCoordinate) coordinate;
+			//precondition
+			assertIsValidCoordinate(other);
+			
 			return getX() == other.getX() && getY() == other.getY() && getZ() == other.getZ();
 		}
 		return coordinate.isEqual(this);

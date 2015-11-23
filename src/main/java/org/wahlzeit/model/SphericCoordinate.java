@@ -19,13 +19,44 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodproperty regular
 	 */
     public SphericCoordinate(double latitude, double longitude, double radius) {
-    	if(radius <= 0 || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
- 			throw new IllegalArgumentException();
+    	//precondition
+    	assertIsValidInput(latitude, longitude, radius);
     	
         this.radius = radius;
     	this.latitude = latitude;
         this.longitude = longitude;
+        
+        //postcondition
+        assertClassInvariants();
     }
+    
+    /**
+     * @methodtype assertion
+     */
+    private void assertIsValidInput(double lat, double lon, double radius) {
+    	assert Double.isFinite(lat);
+    	assert lat >= -90;
+    	assert lat <= 90;
+		assert Double.isFinite(lon);
+		assert lon >= -180;
+    	assert lon <= 180;
+		assert Double.isFinite(radius);
+		assert radius >= 0;
+	}
+    
+    /**
+     * @methodtype assertion
+     */
+    private void assertClassInvariants() {
+    	assert Double.isFinite(latitude);
+    	assert latitude >= -90;
+    	assert latitude <= 90;
+		assert Double.isFinite(longitude);
+		assert longitude >= -180;
+    	assert longitude <= 180;
+		assert Double.isFinite(radius);
+		assert radius >= 0;
+	}
     
     /**
      * @methodtype get
@@ -33,7 +64,12 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public double getX() {
-		return radius * Math.sin(latitude) * Math.cos(longitude);
+		double result = radius * Math.sin(latitude) * Math.cos(longitude);
+		
+		//postcondition
+		assert Double.isFinite(result);
+		
+		return result;
 	}
     
     /**
@@ -42,7 +78,12 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
 	public double getY() {
-		return radius * Math.sin(latitude) * Math.sin(longitude);
+    	double result = radius * Math.sin(latitude) * Math.sin(longitude);
+
+		//postcondition
+		assert Double.isFinite(result);
+		
+    	return result;
 	}
 	
 	/**
@@ -51,7 +92,12 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
 	public double getZ() {
-		return radius * Math.cos(latitude);
+    	double result = radius * Math.cos(latitude);
+
+		//postcondition
+		assert Double.isFinite(result);
+		
+    	return result;
 	}
     
     /**
@@ -82,22 +128,30 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype query
      */
     public double getSphericDistance(SphericCoordinate other) {
+		//precondition
+		assert other != null;
+		
     	double dLat = Math.toRadians(other.getLatitude() - latitude);
         double dLon = Math.toRadians(other.getLongitude() - longitude);
         double lat1 = Math.toRadians(latitude);
         double lat2 = Math.toRadians(other.getLatitude());
  
         double a = Math.pow(Math.sin(dLat / 2),2) + Math.pow(Math.sin(dLon / 2),2) * Math.cos(lat1) * Math.cos(lat2);
-        double c = 2 * Math.asin(Math.sqrt(a));
-        return radius * c;
+        double result = radius * 2 * Math.asin(Math.sqrt(a));
+
+		//postcondition
+		assert Double.isFinite(result);
+		assert result >= 0;
+		
+        return result;
     }
     
     /**
      * @methodtype query
      */
     public double getLatitudinalDistance(SphericCoordinate other) {
-    	if (other == null)
-    		throw new IllegalArgumentException();
+    	//precondition
+    	assert other != null;
     	
         return Math.abs(latitude - other.getLatitude());
     }
@@ -106,8 +160,8 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype query
      */
 	public double getLongitudinalDistance(SphericCoordinate other) {
-		if (other == null)
-    		throw new IllegalArgumentException();
+		//precondition
+		assert other != null;
     	
 	    return Math.abs(longitude - other.getLongitude());
 	}
