@@ -1,24 +1,49 @@
 package org.wahlzeit.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SphericCoordinate extends AbstractCoordinate {
 	
-	private double radius;
-	private double latitude;
-    private double longitude;
+	private final double radius;
+	private final double latitude;
+    private final double longitude;
+    
+    private static Map<String, SphericCoordinate> instances = new HashMap<>();
     
     /**
-	 * @methodtype constructor
+	 * @methodtype get
 	 * @methodproperty convenience
 	 */
-    public SphericCoordinate(double latitude, double longitude) {
-    	this(latitude, longitude, 6371.0);
+    public static SphericCoordinate getSphericCoordinate(double latitude, double longitude) {
+    	return getSphericCoordinate(latitude, longitude, 6371.0);
     }
+    
+    public static SphericCoordinate getSphericCoordinate(double latitude, double longitude, double radius) {
+    	String key = asKeyString(latitude, longitude, radius);
+    	SphericCoordinate result = instances.get(key);
+    	if (result == null) {
+    		synchronized(SphericCoordinate.class) {
+    			result = instances.get(key);
+    			if (result == null) {
+    	    		result = new SphericCoordinate(latitude, longitude, radius);
+    	    		instances.put(key, result);
+    	    	}
+    		}
+    	}
+    	return result;
+    }
+    
+    private static String asKeyString(double latitude, double longitude, double radius) {
+    	return latitude + ", " + longitude + ", " + radius;
+    }
+    
     
     /**
 	 * @methodtype constructor
 	 * @methodproperty regular
 	 */
-    public SphericCoordinate(double latitude, double longitude, double radius) {
+    private SphericCoordinate(double latitude, double longitude, double radius) {
     	//precondition
     	assertIsValidInput(latitude, longitude, radius);
     	
@@ -170,6 +195,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodtype conversion
 	 */
 	public String asSphericString() {
-		return latitude + ", " + longitude;
+		return latitude + ", " + longitude + ", " + radius;
 	}   
 }

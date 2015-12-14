@@ -1,16 +1,41 @@
 package org.wahlzeit.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CartesianCoordinate extends AbstractCoordinate {
 	
-	private double x;
-    private double y;
-    private double z;
+	private final double x;
+    private final double y;
+    private final double z;
+    
+    private static Map<String, CartesianCoordinate> instances = new HashMap<>();
+    
+    public static CartesianCoordinate getCartesianCoordinate(double x, double y, double z) {
+    	String key = asKeyString(x, y, z);
+    	CartesianCoordinate result = instances.get(key);
+    	if (result == null) {
+    		synchronized(CartesianCoordinate.class) {
+    			result = instances.get(key);
+    			if (result == null) {
+    	    		result = new CartesianCoordinate(x, y, z);
+    	    		instances.put(key, result);
+    	    	}
+    		}
+    	}
+    	return result;
+    }
+    
+    private static String asKeyString(double x, double y, double z) {
+    	return x + ", " + y + ", " + z;
+    }
+    
     
     /**
 	 * @methodtype constructor
 	 * @methodproperty regular
 	 */
-    public CartesianCoordinate(double x, double y, double z) {
+    private CartesianCoordinate(double x, double y, double z) {
     	//precondition
     	assertIsValidInput(x, y, z);
     	

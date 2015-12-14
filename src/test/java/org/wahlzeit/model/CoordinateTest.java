@@ -19,8 +19,8 @@ public class CoordinateTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		a = new SphericCoordinate(42.0, 43.0);
-		b = new SphericCoordinate(52.0, 44.0);
+		a = SphericCoordinate.getSphericCoordinate(42.0, 43.0);
+		b = SphericCoordinate.getSphericCoordinate(52.0, 44.0);
 		nullCoord = null;
 	}
 
@@ -48,7 +48,7 @@ public class CoordinateTest {
 	@Test
 	public void testEquals() {
 		assertTrue(a.equals(a));
-		assertTrue(a.equals(new SphericCoordinate(a.getLatitude(), a.getLongitude())));
+		assertTrue(a.equals(SphericCoordinate.getSphericCoordinate(a.getLatitude(), a.getLongitude())));
 		assertFalse(a.equals(b));
 		assertFalse(a.equals(nullCoord));
 	}
@@ -56,7 +56,7 @@ public class CoordinateTest {
 	@Test
 	public void testHashCode() {
 		assertTrue(a.hashCode() == a.hashCode());
-		assertTrue(a.hashCode() == new SphericCoordinate(a.getLatitude(), a.getLongitude()).hashCode());
+		assertTrue(a.hashCode() == SphericCoordinate.getSphericCoordinate(a.getLatitude(), a.getLongitude()).hashCode());
 		assertFalse(a.hashCode() == b.hashCode());
 	}
 	
