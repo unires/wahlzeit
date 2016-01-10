@@ -2,16 +2,15 @@ package org.wahlzeit.model;
 
 import java.io.Serializable;
 
-import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Subclass;
 
 /**
  * A DonutPhoto represents a user-provided (uploaded) photo in the domain of donuts.
  */
-@Entity
+@Subclass
 public class DonutPhoto extends Photo implements Serializable {
 	
-	protected String flavor = "";
-	protected String color = "";
+	private Donut donut;
 	
 	/**
 	 * @methodtype constructor
@@ -31,36 +30,16 @@ public class DonutPhoto extends Photo implements Serializable {
 	
 	/**
      * @methodtype get
-     * @methodproperty primitive
      */
-	public String getFlavor() {
-		return flavor;
-	}
-	
-	/**
-     * @methodtype set
-     * @methodproperty primitive
-     */
-	public void setFlavor(String flavor) {
-		this.flavor = flavor;
-	}
-
-	/**
-     * @methodtype get
-     * @methodproperty primitive
-     */
-	public String getColor() {
-		return color;
+	public Donut getDonut() {
+		return donut;
 	}
 
 	/**
      * @methodtype set
-     * @methodproperty primitive
      */
-	public void setColor(String color) {
-		this.color = color;
+	public void setDonut(Donut donut) {
+		this.donut = donut;
+		incWriteCount();
 	}
-	
-	
-
 }
